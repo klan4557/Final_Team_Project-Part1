@@ -1,0 +1,119 @@
+﻿@model MVCTest1.Models.ModifyUserViewModel
+
+@{
+    ViewData["Title"] = "회원 정보 수정";
+    var userRole = ViewBag.UserRole as string;
+}
+
+@if (userRole == "User")
+{
+    <h2>안녕하세요 @ViewBag.emp_number 님</h2>
+    <h2>회원 정보 수정</h2>
+
+    <form asp-action="Modify" method="post">
+        <div class="form-group">
+            <label asp-for="Emp_Number"></label>
+            <input asp-for="Emp_Number" class="form-control" readonly value="@ViewBag.emp_number" />
+            <span asp-validation-for="Emp_Number" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PositionString"></label>
+            <input asp-for="PositionString" class="form-control" readonly value="@ViewBag.User_pos" />
+            <span asp-validation-for="PositionString" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NameString"></label>
+            <input asp-for="NameString" class="form-control" value="@ViewBag.User_name" />
+            <span asp-validation-for="NameString" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="TelString"></label>
+            <input asp-for="TelString" class="form-control" value="@ViewBag.User_tel" />
+            <span asp-validation-for="TelString" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EmailString"></label>
+            <input asp-for="EmailString" class="form-control" value="@ViewBag.User_email" />
+            <span asp-validation-for="EmailString" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AddressString"></label>
+            <input asp-for="AddressString" class="form-control" value="@ViewBag.User_address" />
+            <span asp-validation-for="AddressString" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-outline-info">수정</button>
+    </form>
+}
+else if (userRole == "Admin")
+{
+    <h2>관리자 페이지 - 사원 정보 조회 및 수정</h2>
+
+    <form asp-action="SearchEmployee" method="post">
+        <div class="form-group">
+            <label asp-for="Emp_Number"></label>
+            <input asp-for="Emp_Number" class="form-control" style="width:400px;"/>
+            <button type="submit" class="btn btn-outline-info">조회</button>
+            <span asp-validation-for="Emp_Number" class="text-danger"></span>
+        </div>
+    </form>
+
+    @if (ViewBag.User_name != null)
+    {
+        <form asp-action="Modify" method="post">
+            <div class="form-group">
+                <label asp-for="Emp_Number"></label>
+                <input asp-for="Emp_Number" class="form-control" readonly value="@ViewBag.emp_number" />
+                <span asp-validation-for="Emp_Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PositionString"></label>
+                <input asp-for="PositionString" class="form-control" value="@ViewBag.User_pos" />
+                <span asp-validation-for="PositionString" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameString"></label>
+                <input asp-for="NameString" class="form-control" value="@ViewBag.User_name" />
+                <span asp-validation-for="NameString" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="TelString"></label>
+                <input asp-for="TelString" class="form-control" value="@ViewBag.User_tel" />
+                <span asp-validation-for="TelString" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailString"></label>
+                <input asp-for="EmailString" class="form-control" value="@ViewBag.User_email" />
+                <span asp-validation-for="EmailString" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressString"></label>
+                <input asp-for="AddressString" class="form-control" value="@ViewBag.User_address" />
+                <span asp-validation-for="AddressString" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-outline-info">수정</button>
+        </form>
+    }
+}
+else
+{
+    <h2>로그인이 필요합니다.</h2>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

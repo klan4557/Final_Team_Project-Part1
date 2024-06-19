@@ -1,0 +1,209 @@
+﻿@* <!DOCTYPE html>
+<html>
+<head>
+    <title>신분증 인식</title>
+    <script>
+        async function performOCR_Guest() {
+            var video = document.getElementById('video');
+            var canvas = document.createElement('canvas');
+            canvas.width = 640;
+            canvas.height = 480;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            var imageDataUrl = canvas.toDataURL('image/png');
+
+            try {
+                const response = await fetch('PerformOCR_Guest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ Image: imageDataUrl })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // 사용자에게 확인/취소 선택 대화 상자를 보여줌
+                    if (confirm(`OCR performed successfully. Name: ${data.name}\nDo you want to proceed?`)) {
+                        window.location.href = `/Home/guest_card_create2?name=${encodeURIComponent(data.name)}`; // 사용자가 확인을 선택한 경우
+                    } else {
+                        window.location.href = '/Home/guest_card_create'; // 사용자가 취소를 선택한 경우
+                    }
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error performing OCR: ' + error.message);
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            var video = document.getElementById('video');
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                video.srcObject = stream;
+            });
+
+            document.getElementById('ocrButton').addEventListener('click', performOCR_Guest);
+        });
+    </script>
+</head>
+<body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="ocrButton">PerformOCR_Guest</button>
+</body>
+</html>
+ *@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>신분증 인식</title>
+    <style>
+        #video-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            margin: 0 auto;
+        }
+
+        #video {
+            width: 100%;
+            height: 100%;
+        }
+
+        #frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 45%; /* Adjust this value to make the frame narrower */
+            height: 40%; /* You can adjust this value if needed */
+            transform: translate(-50%, -50%);
+            box-sizing: border-box;
+            pointer-events: none; /* Make sure the frame does not block interactions */
+            border: 3px solid white;
+            border-radius: 10px;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Ensure the overlay does not block interactions */
+        }
+
+            /* Dark overlay areas around the frame */
+            #overlay::before, #overlay::after, #overlay .top, #overlay .bottom, #overlay .left, #overlay .right {
+                content: '';
+                position: absolute;
+                background: rgba(0, 0, 0, 0.7); /* Dark overlay */
+            }
+
+            #overlay::before {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: calc(50% - 20%); /* Adjust this value to control vertical offset */
+            }
+
+            #overlay::after {
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: calc(50% - 20%); /* Adjust this value to control vertical offset */
+            }
+
+            #overlay .left {
+                top: calc(50% - 20%);
+                left: 0;
+                width: calc(50% - 22.5%); /* Adjust this value to control horizontal offset */
+                height: 40%;
+            }
+
+            #overlay .right {
+                top: calc(50% - 20%);
+                right: 0;
+                width: calc(50% - 22.5%); /* Adjust this value to control horizontal offset */
+                height: 40%;
+            }
+
+        #message {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+            z-index: 2;
+        }
+
+        #ocrButton {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+    <script>
+        async function performOCR_Guest() {
+            var video = document.getElementById('video');
+            var canvas = document.createElement('canvas');
+            canvas.width = 640;
+            canvas.height = 480;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            var imageDataUrl = canvas.toDataURL('image/png');
+
+            try {
+                const response = await fetch('PerformOCR_Guest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ Image: imageDataUrl })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // 사용자에게 확인/취소 선택 대화 상자를 보여줌
+                    if (confirm(`OCR performed successfully. Name: ${data.name}\nDo you want to proceed?`)) {
+                        window.location.href = `/Home/guest_card_create2?name=${encodeURIComponent(data.name)}`; // 사용자가 확인을 선택한 경우
+                    } else {
+                        window.location.href = '/Home/guest_card_create'; // 사용자가 취소를 선택한 경우
+                    }
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error performing OCR: ' + error.message);
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            var video = document.getElementById('video');
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                video.srcObject = stream;
+            });
+
+            document.getElementById('ocrButton').addEventListener('click', performOCR_Guest);
+        });
+    </script>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video" autoplay></video>
+        <div id="overlay">
+            <div class="top"></div>
+            <div class="bottom"></div>
+            <div class="left"></div>
+            <div class="right"></div>
+        </div>
+        <div id="frame"></div>
+        <div id="message">신분증을 영역 안에 맞추고 촬영해주세요.</div>
+    </div>
+    <button id="ocrButton" class="btn btn-outline-info">신분증 인식</button>
+</body>
+</html>

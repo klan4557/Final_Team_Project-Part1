@@ -1,0 +1,352 @@
+﻿@* 
+@model MVCTest1.Models.Employee_CheckModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>사원증 조회 및 수정</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>관리자 페이지 - 사원증 조회 및 수정</h2>
+
+        <form asp-action="SearchEmployee_Check" method="post">
+            <div class="form-group">
+                <label for="EmpNumber">Employee Number</label>
+                <input type="text" class="form-control" id="Emp_Number" name="Emp_Number" />
+                <button type="submit" class="btn btn-secondary mt-2">조회</button>
+                <span asp-validation-for="EmpNumber" class="text-danger"></span>
+            </div>
+        </form>
+
+        @if (Model != null)
+        {
+            <h3>조회 결과</h3>
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>Employee Number</th>
+                        <th>Name</th>
+                        <th>Image 1</th>
+                        <th>Image 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.EmpNumber</td>
+                        <td>@Model.Name</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="showImageModal('@Model.Image1')">사원증 앞면</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="showImageModal('@Model.Image2')">사원증 뒷면</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        else if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger mt-4">@ViewBag.Message</div>
+        }
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Employee Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="Employee Image" class="img-fluid" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showImageModal(imageBase64) {
+            var imgElement = document.getElementById('modalImage');
+            imgElement.src = "data:image/png;base64," + imageBase64;
+            var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html>
+ *@
+
+@* @model List<MVCTest1.Models.Employee_CheckModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>사원증 조회 및 수정</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>관리자 페이지 - 사원증 조회 및 수정</h2>
+
+        <form asp-action="SearchEmployee_Check" method="post">
+            <div class="form-group">
+                <label for="EmpNumber">Employee Number</label>
+                <input type="text" class="form-control" id="Emp_Number" name="Emp_Number" />
+                <button type="submit" class="btn btn-secondary mt-2">조회</button>
+                <span asp-validation-for="EmpNumber" class="text-danger"></span>
+            </div>
+        </form>
+
+        @if (Model != null && Model.Any())
+        {
+            <h3>조회 결과</h3>
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>Employee Number</th>
+                        <th>Name</th>
+                        <th>Image 1</th>
+                        <th>Image 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>@employee.EmpNumber</td>
+                            <td>@employee.Name</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="showImageModal('@employee.Image1')">사원증 앞면</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="showImageModal('@employee.Image2')">사원증 뒷면</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger mt-4">@ViewBag.Message</div>
+        }
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Employee Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="Employee Image" class="img-fluid" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showImageModal(imageBase64) {
+            var imgElement = document.getElementById('modalImage');
+            imgElement.src = "data:image/png;base64," + imageBase64;
+            var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html> *@
+
+@* @model List<MVCTest1.Models.Employee_CheckModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>사원증 조회 및 수정</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>관리자 페이지 - 사원증 조회 및 수정</h2>
+
+        <form asp-action="SearchEmployee_Check" method="post">
+            <div class="form-group">
+                <label for="EmpNumber">Employee Number</label>
+                <input type="text" class="form-control" id="Emp_Number" name="Emp_Number" />
+                <button type="submit" class="btn btn-secondary mt-2">조회</button>
+                <span asp-validation-for="EmpNumber" class="text-danger"></span>
+            </div>
+        </form>
+
+        @if (Model != null && Model.Any())
+        {
+            <h3>조회 결과</h3>
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>Employee Number</th>
+                        <th>Name</th>
+                        <th>Image 1</th>
+                        <th>Image 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>@employee.EmpNumber</td>
+                            <td>@employee.Name</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="showImageModal('@employee.Image1')">사원증 앞면</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="showImageModal('@employee.Image2')">사원증 뒷면</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger mt-4">@ViewBag.Message</div>
+        }
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Employee Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="Employee Image" class="img-fluid" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showImageModal(imageBase64) {
+            var imgElement = document.getElementById('modalImage');
+            imgElement.src = "data:image/png;base64," + imageBase64;
+            var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html> *@
+
+@model List<MVCTest1.Models.Employee_CheckModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>사원증 조회</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>관리자 페이지 - 사원증 조회</h2>
+
+        <form asp-action="SearchEmployee_Check" method="post">
+            <div class="form-group">
+                <label for="EmpNumber">Employee Number</label>
+                <input type="text" class="form-control" id="Emp_Number" name="Emp_Number" style="width:400px;"/>
+                <button type="submit" style="margin-bottom:30px;" class="btn btn-outline-info">조회</button>
+                @* 유효성 검사 메시지 추가 *@
+                @if (!string.IsNullOrEmpty(ViewBag.ValidationMessage as string))
+                {
+                    <span class="text-danger">@ViewBag.ValidationMessage</span>
+                }
+            </div>
+        </form>
+
+        @if (Model != null && Model.Any())
+        {
+            <h3>조회 결과</h3>
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>Employee Number</th>
+                        <th>Name</th>
+                        <th>Image 1</th>
+                        <th>Image 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>@employee.EmpNumber</td>
+                            <td>@employee.Name</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-info" onclick="showImageModal('@employee.Image1')">사원증 앞면</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-info" onclick="showImageModal('@employee.Image2')">사원증 뒷면</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger mt-4">@ViewBag.Message</div>
+        }
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Employee Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="Employee Image" class="img-fluid" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showImageModal(imageBase64) {
+            var imgElement = document.getElementById('modalImage');
+            imgElement.src = "data:image/png;base64," + imageBase64;
+            var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>방문증 제작</title>
+    <style>
+        #image-container {
+            display: none;
+        }
+
+        #main-container {
+            display: flex;
+        }
+
+        #form-container {
+            flex: 1;
+        }
+
+        #image-container {
+            flex: 1;
+            margin-left: 20px;
+        }
+    </style>
+    <script>
+        function showImages() {
+            document.getElementById('image-container').style.display = 'block';
+        }
+
+        function onConfirm() {
+            alert('성공적으로 제작하였습니다.');
+            window.location.href = '/Home';
+        }
+    </script>
+</head>
+<body>
+    <h1>방문증 제작 페이지</h1>
+
+    <div id="main-container">
+        <div id="form-container">
+            <form id="employee-form" method="post" action="/Home/Guest_Card_Create3" onsubmit="showImages()">
+                <div>
+                    <label for="Guest_Number">방문 카드번호:</label>
+                    <input type="text" id="Guest_Number" name="Guest_Number" value="@ViewBag.Guest_num" required />
+                </div>
+                <button type="submit" class="btn btn-outline-info">제작</button>
+            </form>
+        </div>
+    </div>
+
+    @if (ViewBag.VisitImg1 != null && ViewBag.VisitImg2 != null)
+    {
+        <div id="image-container" style="display: block;">
+            <h2>방문증</h2>
+            <img id="employee-image1" src="data:image/jpeg;base64,@ViewBag.VisitImg1" alt="Employee Image 1" />
+            <img id="employee-image2" src="data:image/jpeg;base64,@ViewBag.VisitImg2" alt="Employee Image 2" />
+            <button id="save-image-button" class="btn btn-outline-info" onclick="onConfirm()">확인</button>
+        </div>
+    }
+</body>
+</html>

@@ -1,0 +1,823 @@
+/*site.css*/
+/*html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}*/
+
+
+/*html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f3f2ef;*/ /* LinkedIn의 배경색과 유사하게 변경 */
+/*}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0073b1;*/ /* LinkedIn의 버튼 색상과 유사하게 변경 */
+    /*border-color: #0073b1;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 800px;
+    padding: 4rem;
+    background: #fff;
+    border-radius: .5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .login-box h2 {
+        margin-bottom: 2rem;
+        font-size: 3rem;
+        text-align: center;
+    }
+
+    .login-box p {
+        margin-bottom: 3rem;
+        font-size: 2rem;
+        text-align: center;
+    }
+
+.forgot-password {
+    display: block;
+    margin-top: .5rem;
+    text-align: right;
+    color: #0073b1;*/ /* LinkedIn의 링크 색상과 유사하게 변경 */
+    /*text-decoration: none;
+}
+
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+.btn-block {
+    display: block;
+    width: 100%;
+}*/
+
+/*html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f3f2ef;
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+}
+
+.navbar-nav .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+}
+
+.navbar-nav .nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-nav .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+    .navbar-nav .dropdown-item:hover {
+        color: #16181b;
+        text-decoration: none;
+        background-color: #f8f9fa;
+    }
+*/
+
+/*html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f3f2ef;
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+    margin-left:20px;
+    margin-right: 50px;
+}
+
+.navbar-nav .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+}
+
+.navbar-nav:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-nav .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+    .navbar-nav .dropdown-item:hover {
+        color: #16181b;
+        text-decoration: none;
+        background-color: #f8f9fa;
+    }
+*/
+
+/*html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f3f2ef;
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+    margin-right: 20px;
+}
+
+.mega-menu {
+    display: none;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 100%;
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    padding: 20px 0;
+    z-index: 1000;
+}
+
+    .navbar-nav:hover + .mega-menu,
+    .mega-menu:hover {
+        display: block;
+    }
+
+    .mega-menu .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .mega-menu h6 {
+        font-size: 16px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .mega-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .mega-menu ul li {
+            margin-bottom: 5px;
+        }
+
+            .mega-menu ul li a {
+                color: #212529;
+                text-decoration: none;
+            }
+
+                .mega-menu ul li a:hover {
+                    text-decoration: underline;
+                }
+*/
+
+/*html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f3f2ef;
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+    margin-right: 20px;
+}
+
+.mega-menu {
+    display: none;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 100%;
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    padding: 20px 0;
+    z-index: 1000;
+}*/
+/*
+.mega-menu {
+    display: none;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 100%;
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    padding: 20px 0;
+    z-index: 1000;
+}
+
+    .navbar-nav:hover + .mega-menu,
+    .mega-menu:hover {
+        display: block;
+    }
+
+    .mega-menu .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .mega-menu h6 {
+        font-size: 16px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .mega-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .mega-menu ul li {
+            margin-bottom: 5px;
+        }
+
+            .mega-menu ul li a {
+                color: #212529;
+                text-decoration: none;
+            }
+
+                .mega-menu ul li a:hover {
+                    text-decoration: underline;
+                }
+*/
+
+
+
+/*html, body {
+    font-size: 15px;
+    min-height: 100%;
+    height:100%;
+}
+
+body {
+    margin: 0;*/ /* 모든 마진 제거 */
+    /*padding: 0;*/ /* 모든 패딩 제거 */
+    /*margin-bottom: 60px;
+    padding-bottom: 60px;
+    background-color: #ffffff;
+}
+
+.navbar {
+    margin-bottom: 0;*/ /* 네비게이션 바의 하단 마진 제거 */
+    /*position: fixed;*/ /* 화면 상단에 고정 */
+    /*width: 100%;*/ /* 전체 너비로 설정 */
+    /*top: 0;*/ /* 화면의 맨 위에 위치 */
+    /*z-index: 1000;*/ /* 다른 요소들보다 위에 위치하도록 설정 */
+    /*padding: 0;*/ /* 네비게이션 바의 패딩 제거 */
+    /*padding-top: 20px;
+    padding-bottom: 20px;
+    height: 70px;
+}
+
+.container-fluid {
+    padding: 0;*/ /* 부모 요소의 패딩 제거 */
+    /*margin: 0;*/ /* 부모 요소의 마진 제거 */
+/*}
+
+.navbar-nav .nav-item {
+    position: relative;
+    margin-right: 100px;
+    margin-left: 50px;
+
+}
+
+.mega-menu {
+    display: none;*/ /* 숨김 상태로 시작 */
+    /*position: fixed;*/ /* 고정 위치 */
+    /*width: 100%;*/ /* 전체 너비 */
+    /*left: 0;
+    top: 70px;*/ /* 네비게이션 바로부터의 간격 */
+    /*background: rgba(255, 255, 255, 0.9);*/ /* 배경색을 약간 투명하게 설정 */
+    /*border-top: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    padding: 20px 0;
+    z-index: 2000;*/ /* 다른 요소들보다 위에 위치하도록 설정 */
+    /*display: flex;
+    justify-content: flex-end;*/ /* 오른쪽 정렬 */
+/*}
+
+    .mega-menu .container {
+        display: flex;
+        justify-content: flex-end;*/ /* 내부 요소를 오른쪽으로 정렬 */
+        /*width: auto;*/ /* 컨테이너의 너비를 자동으로 설정 */
+        /*max-width: 100%;*/ /* 최대 너비 설정 */
+    /*}
+
+    .mega-menu h6 {
+        font-size: 15px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+.custom-gap {
+    padding-right: 80px;*/ /* 오른쪽 패딩 조정 */
+    /*padding-left: 80px;*/ /* 왼쪽 패딩 조정 */
+/*}
+
+.mega-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .mega-menu ul li {
+        margin-bottom: 5px;
+    }
+
+        .mega-menu ul li a {
+            color: #212529;
+            text-decoration: none;
+            white-space: nowrap;
+            min-width: 160px;
+        }
+
+            .mega-menu ul li a:hover {
+                text-decoration: underline;
+            }
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    margin-left: 120px;*/ /* 왼쪽 마진 설정 */
+/*}
+
+a {
+    color: #0077;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn-block {
+    margin: 20px auto;
+    display: block;
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}*/
+
+/*.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}*/
+/*.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;*/ /* 푸터 높이와 동일하게 설정 */
+    /*background-color: #f8f9fa;*/ /* 푸터 배경색 추가 */
+    /*z-index: 1000;*/ /* 다른 요소들보다 위에 위치하도록 설정 */
+    /*white-space: nowrap;
+    border-top: 1px solid #e5e5e5;
+    box-shadow: 0 -0.25rem .75rem rgba(0, 0, 0, .05);
+}
+
+
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;*/
+    /*background-color: #f8f9fa;*/
+    /*background-color:#ffffff;
+}
+
+.login-box {
+    width: 400px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+    .login-box img {
+        width: 150px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .login-box .form-group {
+        margin-bottom: 20px;
+    }
+
+    .login-box .form-control {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .login-box button {
+        width: 100%;
+    }*/
+
+html, body {
+    height: 100%; /* 전체 높이를 100%로 설정 */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.navbar {
+    margin-bottom: 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 70px;
+}
+
+.container-fluid {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+    margin-right: 100px;
+    margin-left: 50px;
+}
+
+.mega-menu {
+    display: none;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 70px;
+    background: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    padding: 20px 0;
+    z-index: 2000;
+    display: flex;
+    justify-content: flex-end;
+}
+
+    .mega-menu .container {
+        display: flex;
+        justify-content: flex-end;
+        width: auto;
+        max-width: 100%;
+    }
+
+    .mega-menu h4 {
+        font-size: 15px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+
+.custom-gap {
+    padding-right: 20px;
+    padding-left: 20px;
+    text-align: center;
+}
+
+.mega-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+    .mega-menu .row {
+        justify-content: flex-end; /* 부모 컨테이너의 아이템들을 오른쪽 정렬 */
+
+    }
+    .mega-menu ul li {
+        margin-bottom: 5px;
+    }
+
+        .mega-menu ul li a {
+            color: #212529;
+            text-decoration: none;
+            white-space: nowrap;
+            min-width: 160px;
+
+        }
+
+            .mega-menu ul li a:hover {
+                text-decoration: underline;
+            }
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    margin-left: 120px;
+}
+
+a {
+    color: #0077;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn-block {
+    margin: 20px auto;
+    display: block;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+
+main {
+    flex: 1; /* 남은 공간을 채우도록 설정 */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 70px - 60px);
+   /* background-color: #87CEEB;*/
+    width:100%;
+}
+
+.login-box {
+    width: 400px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+    .login-box img {
+        width: 150px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .login-box .form-group {
+        margin-bottom: 20px;
+    }
+
+    .login-box .form-control {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .login-box button {
+        width: 180px;
+        margin: 0 auto;
+    }
+

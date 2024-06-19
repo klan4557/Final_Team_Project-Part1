@@ -1,0 +1,128 @@
+﻿@* 
+@{
+    Layout = "_Layout";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Username))
+{
+    <h2>안녕하세요 @ViewBag.Username 님</h2>
+    <button id="logoutButton" type="button">로그아웃</button>
+}
+else
+{
+    <h2>로그인이 필요합니다.</h2>
+}
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#logoutButton").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Logout", "Home")",
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        alert("로그아웃 되었습니다.");
+                        window.location.href = "/";
+                    },
+                    error: function () {
+                        alert("오류가 발생했습니다. 다시 시도해주세요.");
+                    }
+                });
+            });
+        });
+    </script>
+}
+ *@
+
+@* @{
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    @if (!string.IsNullOrEmpty(ViewBag.Username))
+    {
+        <div class="card p-4 shadow-sm">
+            <h2 class="mb-4">안녕하세요 @ViewBag.Username 님</h2>
+            <button id="logoutButton" type="button" class="btn btn-primary">로그아웃</button>
+        </div>
+    }
+    else
+    {
+        <div class="card p-4 shadow-sm">
+            <h2>로그인이 필요합니다.</h2>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#logoutButton").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Logout", "Home")",
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        alert("로그아웃 되었습니다.");
+                        window.location.href = "/";
+                    },
+                    error: function () {
+                        alert("오류가 발생했습니다. 다시 시도해주세요.");
+                    }
+                });
+            });
+        });
+    </script>
+}
+ *@
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-75">
+    <div class="card p-4 shadow-sm" style="width: 500px;">
+        @if (!string.IsNullOrEmpty(ViewBag.Username))
+        {
+            <h2 class="mb-4 text-center">안녕하세요 @ViewBag.Username 님</h2>
+            <button id="logoutButton" type="button" class="btn btn-outline-info">로그아웃</button>
+        }
+        else
+        {
+            <h2 class="text-center">로그인이 필요합니다.</h2>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#logoutButton").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Logout", "Home")",
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        alert("로그아웃 되었습니다.");
+                        window.location.href = "/";
+                    },
+                    error: function () {
+                        alert("오류가 발생했습니다. 다시 시도해주세요.");
+                    }
+                });
+            });
+        });
+    </script>
+}

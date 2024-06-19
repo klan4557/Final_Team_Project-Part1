@@ -1,0 +1,132 @@
+﻿@* 
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+@model MVCTest1.Models.GeneralUserViewModel
+
+<form asp-action="Login" method="post" id="loginForm">
+    <div class="form-group">
+        <label asp-for="Emp_Number"></label>
+        <input asp-for="Emp_Number" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" type="password" />
+    </div>
+    <button type="submit" class="btn btn-primary">로그인</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#loginForm").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: $(this).attr('method'),
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert("로그인에 성공하셨습니다!");
+                    window.location.href = '@Url.Action("Index", "Home")';
+                },
+                error: function () {
+                    alert("로그인 실패: 유저명 또는 비밀번호가 잘못되었습니다.");
+                }
+            });
+        });
+    });
+</script>
+ *@
+
+@* @{
+    ViewData["Title"] = "Login Page";
+}
+
+@model MVCTest1.Models.GeneralUserViewModel
+
+<form asp-action="Login" method="post" id="loginForm" class="login-form">
+    <h2>로그인하세요</h2>
+    <div class="form-group">
+        <input asp-for="Emp_Number" class="form-control" placeholder="사원번호" />
+    </div>
+    <div class="form-group">
+        <input asp-for="Password" class="form-control" type="password" placeholder="비밀번호" />
+    </div>
+    <div class="form-group">
+        <a href="#" class="forgot-password">비밀번호를 잊으셨나요?</a>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">로그인</button>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#loginForm").submit(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    type: $(this).attr('method'),
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        alert("로그인에 성공하셨습니다!");
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    },
+                    error: function () {
+                        alert("로그인 실패: 유저명 또는 비밀번호가 잘못되었습니다.");
+                    }
+                });
+            });
+        });
+    </script>
+}
+ *@
+
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+@model MVCTest1.Models.GeneralUserViewModel
+
+<div class="login-container">
+    <div class="login-box">
+        <div class="text-center mb-4">
+            <img src="@Url.Content("~/images/logo1.png")" alt="M.I.S.S" style="width: 150px; margin-top: 70px;">
+        </div>
+        <h2 class="text-center">M.I.S.S</h2>
+        <form asp-action="Login" method="post" id="loginForm">
+            <div class="form-group">
+                <input asp-for="Emp_Number" class="form-control" style="width: 50%; margin: 15px auto;" placeholder="사원번호" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Password" class="form-control" type="password" style="width: 50%; margin: 15px auto;" placeholder="비밀번호" />
+            </div>
+
+            <button type="submit" style="margin: 0 auto" class="btn btn-outline-info">로그인</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#loginForm").submit(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    type: $(this).attr('method'),
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        alert("로그인에 성공하셨습니다!");
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    },
+                    error: function () {
+                        alert("로그인 실패: 유저명 또는 비밀번호가 잘못되었습니다.");
+                    }
+                });
+            });
+        });
+    </script>
+}

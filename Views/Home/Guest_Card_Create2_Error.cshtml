@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>에러</title>
+    <script>
+        function showErrorAndRedirect() {
+            alert('@ViewBag.ErrorMessage');
+            window.location.href = '/Home';
+        }
+    </script>
+</head>
+<body onload="showErrorAndRedirect()">
+    <h1>에러</h1>
+    <p>방문증이 다 찼습니다. 새로 제작해주세요</p>
+</body>
+</html>

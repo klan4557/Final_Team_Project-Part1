@@ -1,0 +1,428 @@
+﻿@* <!DOCTYPE html>
+<html>
+<head>
+    <title>사원증 제작</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <style>
+        #webcam-container, #image-container {
+            display: none;
+        }
+
+        #main-container {
+            display: flex;
+        }
+
+        #form-container {
+            flex: 1;
+        }
+
+        #webcam-container {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>사원증 제작 페이지</h1>
+
+    <div id="main-container">
+        <div id="form-container">
+            <form id="employee-form">
+                <div>
+                    <label for="emp_number">사원번호:</label>
+                    <input type="text" id="emp_number" name="Emp_Number" pattern="\d{8}" minlength="8" maxlength="8" value="@ViewBag.emp_number" required />
+                    <span class="error" id="emp_number_error"> 사원번호는 8자리 숫자여야 합니다.</span>
+                </div>
+                <div>
+                    <label for="password">비밀번호:</label>
+                    <input type="password" id="password" name="Password" value="@ViewBag.password" required />
+                </div>
+                <div>
+                    <label for="name">이름:</label>
+                    <input type="text" id="name" name="NameString" value="@ViewBag.name" readonly required />
+                </div>
+                <div>
+                    <label for="position">직위:</label>
+                    <input type="text" id="position" name="PositionString" required />
+                </div>
+                <div>
+                    <label for="tel">전화번호:</label>
+                    <input type="text" id="tel" name="TelString" required />
+                </div>
+                <div>
+                    <label for="email">이메일:</label>
+                    <input type="email" id="email" name="EmailString" value="@ViewBag.email" required />
+                </div>
+                <div>
+                    <label for="address">주소:</label>
+                    <input type="text" id="address" name="AddressString" value="@ViewBag.address" required />
+                </div>
+                <input type="hidden" id="webcam-image" name="WebcamImage" />
+                <button type="submit">등록</button>
+            </form>
+        </div>
+
+        <div id="webcam-container">
+            <h2>웹캠</h2>
+            <video id="video" width="320" height="240" autoplay style="display: none;"></video>
+            <canvas id="overlay" width="320" height="240"></canvas>
+            <button type="button" id="capture-button">캡처</button>
+        </div>
+    </div>
+
+    <div id="image-container">
+        <h2>복호화된 이미지</h2>
+        <img id="employee-image1" src="" alt="Employee Image 1" />
+        <img id="employee-image2" src="" alt="Employee Image 2" />
+        <button id="save-image-button">확인</button>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            let interval;
+            let checkInterval;
+
+            async function startWebcam() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    const video = document.getElementById('video');
+                    video.srcObject = stream;
+                } catch (error) {
+                    alert('카메라가 연결이 안됐습니다.\n확인을 누르면 홈으로 이동합니다.');
+                    window.location.href = '/Home';
+                }
+            }
+
+            function checkVideoStream() {
+                const video = document.getElementById('video');
+                if (!video.srcObject || video.srcObject.active === false) {
+                    clearInterval(interval);
+                    clearInterval(checkInterval);
+                    alert('카메라가 연결이 안됐습니다.\n확인을 누르면 홈으로 이동합니다.');
+                    window.location.href = '/Home';
+                }
+            }
+
+            $('#employee-form').on('submit', function (event) {
+                event.preventDefault(); // 폼 제출 방지
+                $('#webcam-container').show(); // 웹캠 컨테이너 보이기
+                startWebcam(); // 웹캠 활성화
+
+                interval = setInterval(async function () {
+                    const video = document.getElementById('video');
+                    const canvas = document.getElementById('overlay');
+                    const context = canvas.getContext('2d');
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const data_uri = canvas.toDataURL('image/jpeg');
+
+                    const response = await fetch('/Home/DetectFace', {
+                        method: 'POST',
+                        body: dataURItoBlob(data_uri),
+                        headers: {
+                            'Content-Type': 'application/octet-stream'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result) {
+                            // 얼굴이 인식된 경우 캔버스에 사각형 그리기
+                            context.clearRect(0, 0, canvas.width, canvas.height);
+                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            context.strokeStyle = 'red';
+                            context.lineWidth = 2;
+                            context.strokeRect(result.left, result.top, result.width, result.height);
+                        }
+                    }
+                }, 100); // 0.1초마다 얼굴 인식 수행
+
+                // 비디오 스트림 체크
+                checkInterval = setInterval(checkVideoStream, 1000);
+            });
+
+            $('#capture-button').click(function () {
+                clearInterval(interval); // 실시간 얼굴 인식 중지
+                clearInterval(checkInterval); // 비디오 스트림 체크 중지
+                const video = document.getElementById('video');
+                const canvas = document.getElementById('overlay');
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const data_uri = canvas.toDataURL('image/jpeg');
+                $('#webcam-image').val(data_uri); // 이미지 데이터를 숨겨진 필드에 설정
+
+                // AJAX 요청 보내기
+                $.ajax({
+                    url: '/Home/Emp_id_create2',
+                    type: 'POST',
+                    data: $('#employee-form').serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            $('#employee-image1').attr('src', 'data:image/jpeg;base64,' + response.imageData1);
+                            $('#employee-image2').attr('src', 'data:image/jpeg;base64,' + response.imageData2);
+                            $('#image-container').show();
+                            $('#webcam-container').hide();
+                        } else {
+                            alert(response.message || '데이터 처리 중 오류가 발생했습니다.');
+                        }
+                    },
+                    error: function () {
+                        alert('서버와의 통신 중 오류가 발생했습니다.');
+                    }
+                });
+            });
+
+            $('#save-image-button').on('click', function () {
+                alert('성공적으로 제작하였습니다.');
+                window.location.href = '/Home';
+            });
+
+            function dataURItoBlob(dataURI) {
+                var byteString = atob(dataURI.split(',')[1]);
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+                var ab = new ArrayBuffer(byteString.length);
+                var ia = new Uint8Array(ab);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                return new Blob([ab], { type: mimeString });
+            }
+        });
+    </script>
+</body>
+</html>
+
+ *@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>사원증 제작</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <style>
+        body {
+            padding-top: 100px; /* 페이지 상단에 여백 추가 */
+        }
+
+
+        #webcam-container, #image-container {
+            display: none;
+            
+        }
+
+        #image-container {
+            justify-content:center;
+        }
+
+        #main-container {
+            display: flex;
+            justify-content:start;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        #form-container {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        #webcam-container {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">사원증 제작 페이지</h1> <!-- 클래스 추가 -->
+
+        <div id="main-container">
+            <div id="form-container">
+                <form id="employee-form">
+                    <div class="form-group">
+                        <label for="emp_number">사원번호:</label>
+                        <input type="text" id="emp_number" name="Emp_Number" class="form-control" pattern="\d{8}" minlength="8" maxlength="8" value="@ViewBag.emp_number" required />
+                        <span class="text-danger" id="emp_number_error">사원번호는 8자리 숫자여야 합니다.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">비밀번호:</label>
+                        <input type="password" id="password" name="Password" class="form-control" value="@ViewBag.password" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="name">이름:</label>
+                        <input type="text" id="name" name="NameString" class="form-control" value="@ViewBag.name"d required />
+                    </div>
+                    <div class="form-group">
+                        <label for="position">직위:</label>
+                        <input type="text" id="position" name="PositionString" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="tel">전화번호:</label>
+                        <input type="text" id="tel" name="TelString" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">이메일:</label>
+                        <input type="email" id="email" name="EmailString" class="form-control" value="@ViewBag.email" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="address">주소:</label>
+                        <input type="text" id="address" name="AddressString" class="form-control" value="@ViewBag.address" required />
+                    </div>
+                    <input type="hidden" id="webcam-image" name="WebcamImage" />
+                    <button type="submit" class="btn btn-outline-info">등록</button>
+                </form>
+            </div>
+
+            <div id="webcam-container">
+                <h2>웹캠</h2>
+                <video id="video" width="320" height="240" autoplay style="display: none;"></video>
+                <canvas id="overlay" width="320" height="240"></canvas>
+                <button type="button" class="btn btn-outline-info " id="capture-button">캡처</button>
+            </div>
+        </div>
+
+        <div id="image-container" class="text-center mt-4">
+            <h2>사원증</h2>
+            <img id="employee-image1" src="" alt="Employee Image 1" class="img-fluid" />
+            <img id="employee-image2" src="" alt="Employee Image 2" class="img-fluid" />
+            <button class="btn btn-outline-info" id="save-image-button">확인</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            let interval;
+            let checkInterval;
+
+            async function startWebcam() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    const video = document.getElementById('video');
+                    video.srcObject = stream;
+                } catch (error) {
+                    alert('카메라가 연결이 안됐습니다.\n확인을 누르면 홈으로 이동합니다.');
+                    window.location.href = '/Home';
+                }
+            }
+
+            function checkVideoStream() {
+                const video = document.getElementById('video');
+                if (!video.srcObject || video.srcObject.active === false) {
+                    clearInterval(interval);
+                    clearInterval(checkInterval);
+                    alert('카메라가 연결이 안됐습니다.\n확인을 누르면 홈으로 이동합니다.');
+                    window.location.href = '/Home';
+                }
+            }
+
+            $('#employee-form').on('submit', function (event) {
+                event.preventDefault(); // 폼 제출 방지
+                $('#webcam-container').show(); // 웹캠 컨테이너 보이기
+                startWebcam(); // 웹캠 활성화
+
+                interval = setInterval(async function () {
+                    const video = document.getElementById('video');
+                    const canvas = document.getElementById('overlay');
+                    const context = canvas.getContext('2d');
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const data_uri = canvas.toDataURL('image/jpeg');
+
+                    const response = await fetch('/Home/DetectFace', {
+                        method: 'POST',
+                        body: dataURItoBlob(data_uri),
+                        headers: {
+                            'Content-Type': 'application/octet-stream'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result) {
+                            // 얼굴이 인식된 경우 캔버스에 사각형 그리기
+                            context.clearRect(0, 0, canvas.width, canvas.height);
+                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            context.strokeStyle = 'red';
+                            context.lineWidth = 2;
+                            context.strokeRect(result.left, result.top, result.width, result.height);
+                        }
+                    }
+                }, 100); // 0.1초마다 얼굴 인식 수행
+
+                // 비디오 스트림 체크
+                checkInterval = setInterval(checkVideoStream, 1000);
+            });
+
+            $('#capture-button').click(function () {
+                clearInterval(interval); // 실시간 얼굴 인식 중지
+                clearInterval(checkInterval); // 비디오 스트림 체크 중지
+                const video = document.getElementById('video');
+                const canvas = document.getElementById('overlay');
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const data_uri = canvas.toDataURL('image/jpeg');
+                $('#webcam-image').val(data_uri); // 이미지 데이터를 숨겨진 필드에 설정
+
+                // AJAX 요청 보내기
+                $.ajax({
+                    url: '/Home/Emp_id_create2',
+                    type: 'POST',
+                    data: $('#employee-form').serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            $('#employee-image1').attr('src', 'data:image/jpeg;base64,' + response.imageData1);
+                            $('#employee-image2').attr('src', 'data:image/jpeg;base64,' + response.imageData2);
+                            $('#image-container').show();
+                            $('#webcam-container').hide();
+                        } else {
+                            alert(response.message || '데이터 처리 중 오류가 발생했습니다.');
+                        }
+                    },
+                    error: function () {
+                        alert('서버와의 통신 중 오류가 발생했습니다.');
+                    }
+                });
+            });
+
+            $('#save-image-button').on('click', function () {
+                alert('성공적으로 제작하였습니다.');
+                window.location.href = '/Home';
+            });
+
+            function dataURItoBlob(dataURI) {
+                var byteString = atob(dataURI.split(',')[1]);
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+                var ab = new ArrayBuffer(byteString.length);
+                var ia = new Uint8Array(ab);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                return new Blob([ab], { type: mimeString });
+            }
+        });
+    </script>
+</body>
+</html>
+

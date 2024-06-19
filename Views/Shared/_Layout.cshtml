@@ -1,0 +1,178 @@
+﻿@*_layout.cshtml*@
+
+
+<!DOCTYPE html>
+<html lang="en">
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - M.I.S.S</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MVCTest1.styles.css" asp-append-version="true" />
+    <style>
+        .navbar-brand {
+            margin-left: 120px;
+        }
+
+        body {
+            padding-top: 70px;
+        }
+
+        .mega-menu .nav-item {
+            margin: 0 20px;
+            display: inline-block;
+            white-space: nowrap;
+            text-align:center;
+        }
+
+    </style>
+</head>
+<body>
+    @if (ViewBag.HideNavbar != true)
+    {
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="@Url.Content("~/images/logo1.png")" alt="M.I.S.S" width="50" height="50">
+                        M.I.S.S
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                        <ul class="navbar-nav flex-grow-1 justify-content-end">
+                            @{
+                                var userRole = HttpContextAccessor.HttpContext.Session.GetString("Role");
+                            }
+                            @if (userRole != "User" && userRole != "Admin")
+                            {
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
+                            }
+                            @if (userRole == "User" || userRole == "Admin")
+                            {
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="" id="companyDropdown" role="button">MyPage</a>
+                                </li>
+                            }
+                            @if (userRole == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="" id="productsDropdown" role="button">사원증</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="" id="irDropdown" role="button">방문증</a>
+                                </li>
+                            }
+                            @if (userRole == "User" || userRole == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="" id="careersDropdown" role="button">Log</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="mega-menu">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2 custom-gap">
+                            @if (userRole == "User" || userRole == "Admin")
+                            {
+                                <h4>MyPage</h4>
+                                <ul>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="MyPage">나의 정보</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Modify">회원정보수정</a></li>
+                                </ul>
+                            }
+                        </div>
+                        <div class="col-md-2 custom-gap">
+                            @if (userRole == "Admin")
+                            {
+                                <h4>사원증</h4>
+                                <ul>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Emp_id_create">사원증 제작</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Emp_id_check">사원증 조회</a></li>
+                                </ul>
+                            }
+                        </div>
+                        <div class="col-md-2 custom-gap">
+                            @if (userRole == "Admin")
+                            {
+                                <h4>방문증</h4>
+                                <ul>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Guest_Card_Create3">방문증 제작</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Guest_Card_Create">방문증 등록</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Guest_id_check">방문증 조회</a></li>
+                                </ul>
+                            }
+                        </div>
+                        <div class="col-md-2 custom-gap">
+                            @if (userRole == "User" || userRole == "Admin")
+                            {
+                                <h4>Log</h4>
+                                <ul>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Log">Log</a></li>
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    }
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 페이지 로드 시 mega-menu를 숨김
+            $(".mega-menu").hide();
+
+            $(".navbar-nav .nav-item").hover(
+                function () {
+                    $(".mega-menu").stop(true, true).slideDown();
+                },
+                function () {
+                    $(".mega-menu").stop(true, true).slideUp();
+                }
+            );
+
+            $(".mega-menu").hover(
+                function () {
+                    $(this).stop(true, true).show();
+                },
+                function () {
+                    $(this).stop(true, true).slideUp();
+                }
+            );
+            // SignalR 연결 설정
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/notificationHub")
+                .build();
+
+            connection.on("ReceiveMessage", function (message) {
+                alert(message); // 메시지 박스 표시
+            });
+
+            connection.start().catch(function (err) {
+                return console.error(err.toString());
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

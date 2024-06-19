@@ -1,0 +1,176 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>방문증 등록</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <style>
+        body {
+            padding-top: 100px; /* 페이지 상단에 여백 추가 */
+        }
+        #webcam-container {
+            display: none;
+        }
+
+        #main-container {
+            display: flex;
+            justify-content: start;
+            align-items: flex-start; 
+            margin-top: 20px;
+        }
+
+        #form-container {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        #webcam-container {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>방문증 등록 페이지</h1>
+
+    <div id="main-container">
+        <div id="form-container">
+            <form id="employee-form">
+                <div>
+                    <label for="emp_number">방문 카드번호:</label>
+                    <input type="text" id="emp_number" class="form-control" name="Emp_Number" value="@ViewBag.Guest_num" required />
+                </div>
+                <div>
+                    <label for="name">이     름:</label>
+                    <input type="text" id="name" class="form-control" name="NameString" value="@ViewBag.name" required />
+                </div>
+
+                <input type="hidden" id="webcam-image" name="WebcamImage" />
+                <button type="submit" class="btn btn-outline-info">등록</button>
+            </form>
+        </div>
+
+        <div id="webcam-container">
+            <h2>웹캠</h2>
+            <div id="webcam" style="display: none;"></div>
+            <canvas id="overlay" width="320" height="240"></canvas>
+            <button type="button" class="btn btn-outline-info" id="capture-button">캡처</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // 웹캠 초기화
+            Webcam.set({
+                width: 320,
+                height: 240,
+                image_format: 'jpeg',
+                jpeg_quality: 90
+            });
+
+            let interval;
+
+            $('#employee-form').on('submit', function (event) {
+                event.preventDefault(); // 폼 제출 방지
+                $('#webcam-container').show(); // 웹캠 컨테이너 보이기
+                Webcam.attach('#webcam'); // 웹캠 활성화
+
+                Webcam.on('load', function () {
+                    // 실시간 얼굴 인식 시작
+                    interval = setInterval(async function () {
+                        Webcam.snap(async function (data_uri) {
+                            const response = await fetch('/Home/DetectFace', {
+                                method: 'POST',
+                                body: dataURItoBlob(data_uri),
+                                headers: {
+                                    'Content-Type': 'application/octet-stream'
+                                }
+                            });
+
+                            const canvas = document.getElementById('overlay');
+                            const context = canvas.getContext('2d');
+                            const image = new Image();
+                            image.src = data_uri;
+                            image.onload = () => {
+                                context.clearRect(0, 0, canvas.width, canvas.height);
+                                context.drawImage(image, 0, 0, canvas.width, canvas.height);
+                            };
+
+                            if (response.ok) {
+                                const result = await response.json();
+                                if (result) {
+                                    // 얼굴이 인식된 경우 캔버스에 사각형 그리기
+                                    context.strokeStyle = 'red';
+                                    context.lineWidth = 2;
+                                    context.strokeRect(result.left, result.top, result.width, result.height);
+                                }
+                            }
+                        });
+                    }, 100); // 0.1초마다 얼굴 인식 수행
+                });
+            });
+
+            $('#capture-button').click(function () {
+                clearInterval(interval); // 실시간 얼굴 인식 중지
+                Webcam.snap(function (data_uri) {
+                    $('#webcam-image').val(data_uri); // 이미지 데이터를 숨겨진 필드에 설정
+
+                    // AJAX 요청 보내기
+                    $.ajax({
+                        url: '/Home/guest_card_create2',
+                        type: 'POST',
+                        data: $('#employee-form').serialize(),
+                        success: function (response) {
+                            if (response.success) {
+                                alert('성공적으로 등록하였습니다.');
+                                window.location.href = '/Home';
+                            } else {
+                                alert(response.message || '데이터 처리 중 오류가 발생했습니다.');
+                            }
+                        },
+                        error: function () {
+                            alert('서버와의 통신 중 오류가 발생했습니다.');
+                        }
+                    });
+                });
+            });
+
+            $('#save-image-button').on('click', function () {
+                alert('성공적으로 등록하였습니다.');
+                window.location.href = '/Home';
+            });
+
+            function dataURItoBlob(dataURI) {
+                var byteString = atob(dataURI.split(',')[1]);
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+                var ab = new ArrayBuffer(byteString.length);
+                var ia = new Uint8Array(ab);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                return new Blob([ab], { type: mimeString });
+            }
+        });
+    </script>
+</body>
+</html>
+
+

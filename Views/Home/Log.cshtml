@@ -1,0 +1,418 @@
+﻿@* @model IEnumerable<MVCTest1.Models.LogSuccessData>
+
+@{
+    ViewData["Title"] = "Logs";
+    string empNumber = ViewData["EmpNumber"] as string;
+    string userRole = ViewData["UserRole"] as string;
+}
+
+<h1>Logs</h1>
+
+@if (userRole == "Admin")
+{
+    <form asp-action="Search" method="post">
+        <div class="form-group">
+            <label for="empNumber">Employee Number</label>
+            <input type="text" class="form-control" id="empNumber" name="empNumber" value="@empNumber" required />
+        </div> *@
+        @* <div class="form-group">
+            <label for="startDate">Start Date (optional)</label>
+            <input type="date" class="form-control" id="startDate" name="startDate" />
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date (optional)</label>
+            <input type="date" class="form-control" id="endDate" name="endDate" />
+        </div> *@
+        @* <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+}
+else if (userRole == "User")
+{
+    <form asp-action="Search" method="post">
+        <div class="form-group">
+            <label for="empNumber">Employee Number</label>
+            <input type="text" class="form-control" id="empNumber" name="empNumber" value="@empNumber" readonly />
+        </div>
+        <button type="submit" class="btn btn-primary" disabled>Search</button>
+    </form>
+}
+
+
+@if (Model != null && Model.Any())
+{
+    <table class="table mt-4 table-bordered">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Employee Number</th>
+                <th>Commute Status</th>
+                <th>Face</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in Model)
+            {
+                <tr>
+                    <td>@log.Time</td>
+                    <td>@log.Id</td>
+                    <td>@(log.Commute == "1" ? "출근" : log.Commute == "2" ? "퇴근" : log.Commute == "3" ? "얼굴 불일치" : "알 수 없음")</td>
+                    <td>
+                        @if (log.Commute == "3")
+                        {
+                            <button type="button" class="btn btn-primary" onclick="viewFace('@log.Id')">View Face</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (!string.IsNullOrEmpty(empNumber))
+{
+    <p>No logs found for employee number @empNumber.</p>
+}
+
+<script>
+    function viewFace(employeeId) {
+        // 여기에 버튼 클릭 시 수행할 작업을 추가합니다.
+        // 예를 들어, 모달 창을 열고 얼굴 이미지를 보여줄 수 있습니다.
+        //alert("Viewing face for employee " + employeeId);
+        // 실제 구현에 따라 AJAX 요청을 보내거나 모달을 열 수 있습니다.
+
+
+    }
+</script> *@
+
+@* @model IEnumerable<MVCTest1.Models.LogSuccessData>
+
+@{
+    ViewData["Title"] = "Logs";
+    string empNumber = ViewData["EmpNumber"] as string;
+    string userRole = ViewData["UserRole"] as string;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Logs</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <h1>Logs</h1>
+
+    @if (userRole == "Admin")
+    {
+        <form asp-action="Search" method="post">
+            <div class="form-group">
+                <label for="empNumber">Employee Number</label>
+                <input type="text" class="form-control" id="empNumber" name="empNumber" value="@empNumber" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    }
+    else if (userRole == "User")
+    {
+        <form asp-action="Search" method="post">
+            <div class="form-group">
+                <label for="empNumber">Employee Number</label>
+                <input type="text" class="form-control" id="empNumber" name="empNumber" value="@empNumber" readonly />
+            </div>
+            <button type="submit" class="btn btn-primary" disabled>Search</button>
+        </form>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table mt-4 table-bordered">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Employee Number</th>
+                    <th>Commute Status</th>
+                    <th>Face</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var log in Model)
+                {
+                    <tr>
+                        <td>@log.Time</td>
+                        <td>@log.Id</td>
+                        <td>@(log.Commute == "1" ? "출근" : log.Commute == "2" ? "퇴근" : log.Commute == "3" ? "얼굴 불일치" : "알 수 없음")</td>
+                        <td>
+                            @if (log.Commute == "3")
+                            {
+                                <button type="button" class="btn btn-primary" onclick="viewFace('@log.Id')">View Face</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (!string.IsNullOrEmpty(empNumber))
+    {
+        <p>No logs found for employee number @empNumber.</p>
+    }
+    <!-- Modal -->
+    <div class="modal fade" id="faceModal" tabindex="-1" aria-labelledby="faceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="faceModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalEmployeeId"></p>
+                    <!-- 여기에 얼굴 이미지를 로드하고 표시할 수 있습니다. -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewFace(employeeId) {
+            // 모달 내용 설정
+            document.getElementById('modalEmployeeId').textContent = "Employee ID: " + employeeId;
+            // 모달을 표시합니다.
+            var myModal = new bootstrap.Modal(document.getElementById('faceModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html> *@
+
+@* @model IEnumerable<MVCTest1.Models.LogSuccessData>
+
+@{
+    ViewData["Title"] = "Logs";
+    string empNumber = ViewData["EmpNumber"] as string;
+    string userRole = ViewData["UserRole"] as string;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Logs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <h1>Logs</h1>
+
+    @if (userRole == "Admin")
+    {
+        <form asp-action="Search" method="post">
+            <div class="form-group">
+                <label for="empNumber">Employee Number</label>
+                <input type="text" class="form-control" id="empNumber" name="empNumber" value="@empNumber" />
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    }
+    else if (userRole == "User")
+    {
+        <form asp-action="Search" method="post">
+            <div class="form-group">
+                <label for="empNumber">Employee Number</label>
+                <input type="text" class="form-control" id="empNumber" name="empNumber" value="@empNumber" readonly />
+            </div>
+            <button type="submit" class="btn btn-primary" disabled>Search</button>
+        </form>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table mt-4 table-bordered">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Employee Number</th>
+                    <th>Commute Status</th>
+                    <th>Face</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var log in Model)
+                {
+                    <tr>
+                        <td>@log.Time</td>
+                        <td>@log.Id</td>
+                        <td>@(log.Commute == "1" ? "출근" : log.Commute == "2" ? "퇴근" : log.Commute == "3" ? "얼굴 불일치" : "알 수 없음")</td>
+                        <td>
+                            @if (log.Commute == "3")
+                            {
+                                var faceImageBase64 = log.Face2 != null ? Convert.ToBase64String(log.Face2) : string.Empty;
+                                <button type="button" class="btn btn-primary" onclick="viewFace('@log.Time', '@log.Id', '@faceImageBase64')">View Face</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (!string.IsNullOrEmpty(empNumber))
+    {
+        <p>No logs found for employee number @empNumber.</p>
+    }
+    <!-- Modal -->
+    <div class="modal fade" id="faceModal" tabindex="-1" aria-labelledby="faceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="faceModalLabel">Employee Face</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalTimestamp"></p>
+                    <p id="modalEmployeeId"></p>
+                    <img id="modalEmployeeFace" src="" alt="Employee Face" class="img-fluid" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewFace(timestamp, employeeId, faceImageBase64) {
+            // 모달 내용 설정
+            document.getElementById('modalTimestamp').textContent = "Timestamp: " + timestamp;
+            document.getElementById('modalEmployeeId').textContent = "Employee ID: " + employeeId;
+            var imgElement = document.getElementById('modalEmployeeFace');
+            if (faceImageBase64) {
+                imgElement.src = "data:image/jpeg;base64," + faceImageBase64;
+                imgElement.style.display = "block";
+            } else {
+                imgElement.src = "";
+                imgElement.style.display = "none";
+            }
+            // 모달을 표시합니다.
+            var myModal = new bootstrap.Modal(document.getElementById('faceModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html>
+
+
+ *@
+
+@model IEnumerable<MVCTest1.Models.LogSuccessData>
+
+@{
+    ViewData["Title"] = "Logs";
+    string empNumber = ViewData["EmpNumber"] as string;
+    string userRole = ViewData["UserRole"] as string;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Logs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <h1>Logs</h1>
+
+    @if (userRole == "Admin")
+    {
+        <form asp-action="Search" method="post">
+            <div class="form-group">
+                <label for="empNumber">Employee Number</label>
+                <input type="text" class="form-control" id="empNumber" name="empNumber" value="@empNumber" />
+            </div>
+            <button type="submit" class="btn btn-outline-info">Search</button>
+        </form>
+    }
+    else if (userRole == "User")
+    {
+        <form asp-action="Search" method="post">
+            <div class="form-group">
+                <label for="empNumber">Employee Number</label>
+                <input type="text" class="form-control" id="empNumber" name="empNumber" value="@empNumber" readonly />
+            </div>
+            <button type="submit" class="btn btn-outline-info" disabled>Search</button>
+        </form>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table mt-4 table-bordered">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Employee Number</th>
+                    <th>Commute Status</th>
+                    <th>Face</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var log in Model)
+                {
+                    <tr>
+                        <td>@log.Time</td>
+                        <td>@log.Id</td>
+                        <td>@(log.Commute == "1" ? "출근" : log.Commute == "2" ? "퇴근" : log.Commute == "3" ? "얼굴 불일치" : "알 수 없음")</td>
+                        <td>
+                            @if (log.Commute == "3")
+                            {
+                                var faceImageBase64 = log.Face2 != null ? Convert.ToBase64String(log.Face2) : string.Empty;
+                                <button type="button" class="btn btn-outline-info" onclick="viewFace('@log.Time', '@log.Id', '@faceImageBase64')">View Face</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (!string.IsNullOrEmpty(empNumber))
+    {
+        <p>No logs found for employee number @empNumber.</p>
+    }
+    <!-- Modal -->
+    <div class="modal fade" id="faceModal" tabindex="-1" aria-labelledby="faceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="faceModalLabel">Employee Face</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalTimestamp"></p>
+                    <p id="modalEmployeeId"></p>
+                    <img id="modalEmployeeFace" src="" alt="Employee Face" class="img-fluid" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewFace(timestamp, employeeId, faceImageBase64) {
+            console.log("viewFace called with:", timestamp, employeeId, faceImageBase64);
+            document.getElementById('modalTimestamp').textContent = "Timestamp: " + timestamp;
+            document.getElementById('modalEmployeeId').textContent = "Employee ID: " + employeeId;
+            var imgElement = document.getElementById('modalEmployeeFace');
+            if (faceImageBase64 && faceImageBase64 !== 'undefined' && faceImageBase64 !== 'null' && faceImageBase64.trim() !== "") {
+                imgElement.src = "data:image/jpeg;base64," + faceImageBase64;
+                imgElement.style.display = "block";
+            } else {
+                imgElement.src = "";
+                imgElement.style.display = "none";
+            }
+            var myModal = new bootstrap.Modal(document.getElementById('faceModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html>

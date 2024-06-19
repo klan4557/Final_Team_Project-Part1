@@ -1,0 +1,35 @@
+﻿@* @model MVCTest1.Models.Businesscardinfo
+
+@{
+    ViewBag.HideNavbar = true;
+}
+
+<div id="image-container">
+    <img id="employee-image1" src="data:image/png;base64,@Convert.ToBase64String(Model.Businessimg1)" alt="Employee Image 1" />
+    <img id="employee-image2" src="data:image/png;base64,@Convert.ToBase64String(Model.Businessimg2)" alt="Employee Image 2"  />
+</div>
+ *@
+
+ @model MVCTest1.Models.Businesscardinfo
+
+@{
+    ViewBag.HideNavbar = true;
+}
+
+<div id="image-container">
+    <a href="data:image/png;base64,@Convert.ToBase64String(Model.Businessimg1)" download="EmployeeImage1.png">
+        <img id="employee-image1" src="data:image/png;base64,@Convert.ToBase64String(Model.Businessimg1)" alt="Employee Image 1" onclick="saveImage(this)" />
+    </a>
+    <a href="data:image/png;base64,@Convert.ToBase64String(Model.Businessimg2)" download="EmployeeImage2.png">
+        <img id="employee-image2" src="data:image/png;base64,@Convert.ToBase64String(Model.Businessimg2)" alt="Employee Image 2" onclick="saveImage(this)" />
+    </a>
+</div>
+
+<script>
+    function saveImage(image) {
+        const link = document.createElement('a');
+        link.href = image.src;
+        link.download = image.alt;
+        link.click();
+    }
+</script>

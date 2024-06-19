@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "방문증 반납";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>방문증 반납</title>
+    <style>
+        #main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function showSuccessMessage(message) {
+            alert(message);
+            window.location.href = '/Home';
+        }
+
+        $(document).ready(function () {
+            $('#delete-form').on('submit', function (event) {
+                event.preventDefault(); // 폼 제출 방지
+
+                $.ajax({
+                    url: '/Home/Guest_Card_Receive',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            showSuccessMessage(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('서버와의 통신 중 오류가 발생했습니다.');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="main-container">
+        <h1>방문증 반납 페이지</h1>
+        <form id="delete-form" method="post">
+            <div>
+                <label for="emp_number">방문 카드번호:</label>
+                <input type="text" id="emp_number" name="emp_number" required />
+            </div>
+            <button type="submit">삭제</button>
+        </form>
+    </div>
+</body>
+</html>

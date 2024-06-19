@@ -1,0 +1,113 @@
+﻿@* @model List<GuestCheckModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>방문증 조회</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function returnGuestCard(guestCardNumber) {
+            if (confirm('정말로 이 방문증을 반납하시겠습니까?')) {
+                $.post('/Home/ReturnGuestCard', { guestCardNumber: guestCardNumber }, function (response) {
+                    alert(response.message);
+                    location.reload();
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>방문증 조회</h2>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-info">@TempData["Message"]</div>
+        }
+
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>방문증 번호</th>
+                    <th>이름</th>
+                    <th>반납</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var guestCard in Model)
+                {
+                    <tr>
+                        <td>@guestCard.Guest_Number</td>
+                        <td>@guestCard.Name</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="returnGuestCard('@guestCard.Guest_Number')">반납</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> *@
+
+@model List<GuestCheckModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>방문증 조회</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        function returnGuestCard(guestCardNumber) {
+            if (confirm('정말로 이 방문증을 반납하시겠습니까?')) {
+                $.post('/Home/ReturnGuestCard', { guestCardNumber: guestCardNumber }, function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>방문증 조회</h2>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-info">@TempData["Message"]</div>
+        }
+
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>방문증 번호</th>
+                    <th>이름</th>
+                    <th>반납</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var guestCard in Model)
+                {
+                    <tr>
+                        <td>@guestCard.Guest_Number</td>
+                        <td>@guestCard.Name</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="returnGuestCard('@guestCard.Guest_Number')">반납</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
