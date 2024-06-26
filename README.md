@@ -1,5 +1,6 @@
 # Final Team Project
 ### [최종 프로젝트 Part2] : (https://github.com/klan4557/Final_Team_Project-Part2)
+### [최종 프로젝트 Part1] : (https://github.com/klan4557/Final_Team_Project-Part3)
 ## used C#
 ## ASP.NET Core MVC
 ## Emgu.CV
